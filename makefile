@@ -5,14 +5,14 @@ SDL_INCLUDE = -IC:/SDL2-2.0.0/i686-w64-mingw32/include
 # If your compiler is a bit older you may need to change -std=c++11 to -std=c++0x
 CXXFLAGS = -Wall -c -std=c++0x $(SDL_INCLUDE)
 LDFLAGS = -lmingw32 -mwindows -mconsole $(SDL_LIB)
-EXE = SDL_Lesson3.exe
+EXE = test4.exe
 
 all: $(EXE)
 
 $(EXE): main.o
 	$(CXX) $< $(LDFLAGS) -o $@
 
-main.o: test3.cpp
+main.o: test4.cpp
 	$(CXX) $(CXXFLAGS) $< -o $@
 
 clean:

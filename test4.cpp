@@ -3,9 +3,8 @@
 #include <SDL2/SDL_image.h>
 
 
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
-const int TILE_SIZE = 40;
+const int SCREEN_WIDTH = 800;
+const int SCREEN_HEIGHT = 600;
 
 /**
 * Log an SDL error with some error message to the output stream of our choice
@@ -18,7 +17,7 @@ void logSDLError(std::ostream &os, const std::string &msg){
 }
 
 /**
-* Loads a BMP image into a texture on the rendering device
+* Loads an image into a texture on the rendering device
 * @param file The image file to load
 * @param ren The renderer to load the texture onto
 * @return the loaded texture, or nullptr if something went wrong.
@@ -48,6 +47,7 @@ void renderTexture(SDL_Texture *tex, SDL_Renderer *ren, int x, int y){
 	SDL_Rect dst;
 	dst.x = x;
 	dst.y = y;
+
 	//Query the texture to get its width and height to use
 	SDL_QueryTexture(tex, NULL, NULL, &dst.w, &dst.h);
 	SDL_RenderCopy(ren, tex, NULL, &dst);
@@ -78,36 +78,37 @@ int main(int argc, char** argv){
 		return 3;
 	}
 
-	SDL_Texture *background = loadTexture("background2.png", renderer);
-	SDL_Texture *foreground = loadTexture("foreground2.png", renderer);
+	SDL_Texture *background = loadTexture("background3.png", renderer);
+	SDL_Texture *foreground = loadTexture("dude1.png", renderer);
 	
 	if (background == nullptr || foreground == nullptr)
 		return 4;
 	
-	SDL_RenderClear(renderer);
-	int bW, bH;
-	SDL_QueryTexture(background, NULL, NULL, &bW, &bH);
-	renderTexture(background, renderer, -100, 0);
-	renderTexture(background, renderer, bW, 0);
-	renderTexture(background, renderer, 0, bH);
-	renderTexture(background, renderer, bW, bH);
 	
-	int iW, iH;
-	SDL_QueryTexture(foreground, NULL, NULL, &iW, &iH);
-	int x = SCREEN_HEIGHT / 2 -iW / 2;
-	int y = SCREEN_HEIGHT / 2 -iH / 2;
-	renderTexture(foreground, renderer, x, y);
+	for (int a = 0; a < 10; a++){
+	for (int i = 0; i < 4; i++) {
+	SDL_RenderClear(renderer);
+	
+	renderTexture(background, renderer, 0, 0);
+	
+	SDL_Rect dest;
+	dest.x = i*100; dest.y = 0; dest.w = 100; dest.h = 100;
+	SDL_Rect clip;
+	clip.x = i*250; clip.y = 0; clip.w = 250; clip.h = 250;
+	
+	SDL_RenderCopyEx(renderer, foreground, &clip, &dest, i*90, NULL, SDL_FLIP_NONE);
 	
 	SDL_RenderPresent(renderer);
 	
-	SDL_Delay(2000);
+	SDL_Delay(300);
+	}
+	}
 	
 	SDL_DestroyTexture(background);
 	SDL_DestroyTexture(foreground);
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	
-	//std::cout << "Lolzy" << std::endl;
 	IMG_Quit();
 	SDL_Quit();
 	
