@@ -1,6 +1,8 @@
 #include "SDL2/SDL.h"
 #include <iostream>
 #include <SDL2/SDL_image.h>
+#include "GameObject.h"
+#include "MasterControlProgram.h"
 
 
 const int SCREEN_WIDTH = 800;
@@ -52,38 +54,48 @@ void renderTexture(SDL_Texture *tex, SDL_Renderer *ren, int x, int y){
 	SDL_QueryTexture(tex, NULL, NULL, &dst.w, &dst.h);
 	SDL_RenderCopy(ren, tex, NULL, &dst);
 }
+SDL_Window *window = nullptr;
+SDL_Renderer *renderer = nullptr;
 
-
-
-int main(int argc, char** argv){
+int init() {
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0){
 		logSDLError(std::cout, "SDL_Init");
-		return 1;
+		return 2;
 	}
 	
 	if ((IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG) != IMG_INIT_PNG) {
 		logSDLError(std::cout, "IMG_Init");
-		return 1;
-	}
-	
-	SDL_Window *window = SDL_CreateWindow("Lesson 2", 100, 100, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-	if (window == nullptr){
-		logSDLError(std::cout, "CreateWindow");
-		return 2;
-	}
-	
-	SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-	if (renderer == nullptr) {
-		logSDLError(std::cout, "CreateRenderer");
 		return 3;
 	}
+	
+	window = SDL_CreateWindow("Mah winxorz", 100, 100, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+	if (window == nullptr){
+		logSDLError(std::cout, "CreateWindow");
+		return 4;
+	}
+	
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	if (renderer == nullptr) {
+		logSDLError(std::cout, "CreateRenderer");
+		return 5;
+	}
+	return 1;
+}
 
+
+
+
+int main(int argc, char** argv){
+	
+	if(init() != 1){return 1;}
+	
+	MasterControlProgram  *MCP = new MasterControlProgram();
+	
 	SDL_Texture *background = loadTexture("background3.png", renderer);
 	SDL_Texture *foreground = loadTexture("dude1.png", renderer);
 	
 	if (background == nullptr || foreground == nullptr)
-		return 4;
-	
+		return 5;
 	
 	for (int a = 0; a < 10; a++){
 	for (int i = 0; i < 4; i++) {
@@ -104,6 +116,7 @@ int main(int argc, char** argv){
 	}
 	}
 	
+	
 	SDL_DestroyTexture(background);
 	SDL_DestroyTexture(foreground);
 	SDL_DestroyRenderer(renderer);
@@ -113,5 +126,9 @@ int main(int argc, char** argv){
 	SDL_Quit();
 	
 	return 0;
-	
 }
+
+
+
+
+
