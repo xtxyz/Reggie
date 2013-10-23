@@ -13,7 +13,7 @@ class GameObject {
 	GameObject(Renderer *ren);
 	~GameObject();
 	void Roll(int i);
-	void Pump();
+	void Pump(int i);
 
 	
 
@@ -37,8 +37,8 @@ void GameObject::Roll(int i){
 	else {animationPos = 0;}
 }
 
-void GameObject::Pump() {
-	destRect.x = 10; destRect.y = 0; destRect.w = 100; destRect.h = 100;
+void GameObject::Pump(int i) {
+	destRect.x = 10*i; destRect.y = 0; destRect.w = 100; destRect.h = 100;
 	clipRect.x = animationPos*100; clipRect.y = 0; clipRect.w = 100; clipRect.h = 100;
 	renderer->renderTextureRot(tex, &clipRect, &destRect, 0);
 	if (animationPos<3) {

@@ -1,0 +1,36 @@
+class MasterControlProgram {
+	
+	public:
+		
+		GameObject masterObjectList[10];
+	
+		
+		
+		
+
+};
+
+	MasterControlProgram::MasterControlProgram() {
+		
+	}
+
+	MasterControlProgram::~MasterControlProgram() {
+		
+	}
+	
+	int MasterControlProgram::gameLoop() {
+		bool done = false;
+		while (!done) {
+			//Logic
+				
+			//Output
+				
+			//Input
+		}
+		return 1;
+	}
+		
+		
+	int MasterControlProgram::menu() {
+		return 0;
+	}
